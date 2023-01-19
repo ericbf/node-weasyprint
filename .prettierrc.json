@@ -1,0 +1,21 @@
+{
+	"useTabs": true,
+	"semi": false,
+	"printWidth": 90,
+	"arrowParens": "always",
+	"trailingComma": "none",
+	"importOrder": [
+		"^(react)$",
+		"^[@a-zA-Z](?!ericbf).*$",
+		"^@.*$",
+		"^(\\.\\./){5}.+$",
+		"^(\\.\\./){4}.+$",
+		"^(\\.\\./){3}.+$",
+		"^(\\.\\./){2}.+$",
+		"^(\\.\\./){1}.+$",
+		"^\\./.*$"
+	],
+	"importOrderSeparation": true,
+	"importOrderSortSpecifiers": true,
+	"importOrderCaseInsensitive": true
+}

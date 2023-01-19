@@ -1,0 +1,55 @@
+{
+	"name": "node-weasyprint",
+	"version": "0.0.1",
+	"description": "A NodeJS wrapper for [WeasyPrint](https://doc.courtbouillon.org/weasyprint/stable/index.html)",
+	"license": "MIT",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/ericbf/node-weasyprint"
+	},
+	"author": "Eric Ferreira <eric@ericmakesapps.com>",
+	"main": "build/index.js",
+	"engines": {
+		"node": ">= 10.0.0",
+		"npm": ">= 5.6.0"
+	},
+	"scripts": {
+		"build": "tsc",
+		"check": "run-p lint format \"test -- --watchAll=false\"",
+		"clean-build": "rimraf build/*",
+		"fix": "run-s fix:lint fix:format \"test -- --watchAll=false\"",
+		"fix:format": "npm run format -- --write",
+		"fix:lint": "npm run lint -- --fix",
+		"format": "prettier -c --ignore-path .gitignore \"**/?*.@(js|ts|jsx|tsx|json|md|html|css|scss)\"",
+		"lint": "echo no lint yet",
+		"postbuild": "node scripts/copy-for-publish.js",
+		"prebuild": "run-p clean-build check",
+		"publish": "npm run build && cd build && npm publish",
+		"test": "echo no tests yet",
+		"version": "npm --no-git-tag-version version"
+	},
+	"keywords": [
+		"weasyprint",
+		"pdf",
+		"htmltopdf",
+		"wrapper",
+		"cli-wrapper",
+		"weasyprint-pdf",
+		"pdf-generator"
+	],
+	"dependencies": {
+		"change-case": "^4.1.2",
+		"debug": "4.3.4"
+	},
+	"devDependencies": {
+		"@prettier/plugin-xml": "^2.2.0",
+		"@trivago/prettier-plugin-sort-imports": "^4.0.0",
+		"@types/debug": "^4.1.7",
+		"@types/node": "^18.11.18",
+		"npm-run-all": "^4.1.5",
+		"prettier": "^2.8.3",
+		"prettier-plugin-package": "^1.3.0",
+		"rimraf": "^4.1.1",
+		"typescript": "^4.9.4"
+	}
+}
