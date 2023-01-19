@@ -205,22 +205,19 @@ function weasyprint(
 		err(chunk.toString("utf8").trim())
 	})
 
-	return Object.assign(
-		new Promise<Buffer | void>((resolve, reject) => {
-			child.on("exit", () => {
-				if (child.exitCode) {
-					reject(new Error(Buffer.concat(errBuffers).toString("utf8")))
+	return new Promise<Buffer | void>((resolve, reject) => {
+		child.on("exit", () => {
+			if (child.exitCode) {
+				reject(new Error(Buffer.concat(errBuffers).toString("utf8")))
+			} else {
+				if (!output) {
+					resolve(Buffer.concat(buffers))
 				} else {
-					if (output && buffers.length !== 0) {
-						resolve(Buffer.concat(buffers))
-					} else {
-						resolve()
-					}
+					resolve()
 				}
-			})
-		}),
-		!output ? child.stdout : {}
-	)
+			}
+		})
+	})
 }
 
 export default weasyprint
