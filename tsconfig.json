@@ -5,6 +5,7 @@
 		"rootDir": "./src",
 		"outDir": "./build",
 		"declaration": true,
+		"sourceMap": true,
 		"downlevelIteration": true,
 		"esModuleInterop": true,
 		"forceConsistentCasingInFileNames": true,

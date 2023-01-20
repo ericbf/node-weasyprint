@@ -9,9 +9,11 @@ const err = debug("weasyprint:error")
 const quote = (val: string) =>
 	process.platform !== "win32" ? `"${val.replace(/(["\\$`])/g, "\\$1")}"` : val
 
+type Size = "images" | "fonts" | "all" | "none"
+
 type WeasyPrintOptions = {
 	/**
-	 * Force the input character encoding (e.g. -e utf-8).
+	 * Force the input character encoding (e.g. `encoding: "utf-8"`).
 	 */
 	encoding?: string //  <input_encoding>
 	/**
@@ -35,7 +37,7 @@ type WeasyPrintOptions = {
 	 */
 	pdfIdentifier?: string //  <identifier>
 	/**
-	 * PDF variant to generate (e.g. --pdf-variant pdf/a-3b).
+	 * PDF variant to generate (e.g. `pdfVariant: "pdf/a-3b"`).
 	 */
 	pdfVariant?: string //  <variant-name>
 	/**
@@ -53,7 +55,7 @@ type WeasyPrintOptions = {
 	/**
 	 * Optimize the size of generated documents. Supported types are images, fonts, all and none. This option can be used multiple times by passing an array, all adds all allowed values, none removes all previously set values.
 	 */
-	optimizeSize?: string | string[] //  <type>
+	optimizeSize?: Size | Size[] //  <type>
 	/**
 	 * Show warnings and information messages.
 	 */
