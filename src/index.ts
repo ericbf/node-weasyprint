@@ -1,4 +1,4 @@
-import { constantCase } from "change-case"
+import { paramCase } from "change-case"
 import { spawn } from "child_process"
 import debug from "debug"
 import internal from "stream"
@@ -156,7 +156,7 @@ function weasyprint(
 	const args: [string, ...string[]] = [command]
 
 	Object.entries(options).forEach(function parseOption([camelCaseArg, value]) {
-		const arg = constantCase(camelCaseArg)
+		const arg = paramCase(camelCaseArg)
 
 		if (typeof value === "boolean") {
 			if (value) {
