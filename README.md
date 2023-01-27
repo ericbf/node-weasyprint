@@ -18,6 +18,8 @@ With the binary installed, install this package from `npm`:
 npm i node-weasyprint
 ```
 
+> Since this uses the CLI interface under the hook, the [WeasyPrint command line API](https://doc.courtbouillon.org/weasyprint/stable/api_reference.html#command-line-api) applies.
+
 ## Usage
 
 Example:
