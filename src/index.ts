@@ -51,7 +51,7 @@ type WeasyPrintOptions = {
 	/**
 	 * Follow HTML presentational hints.
 	 */
-	presentationalHint?: boolean
+	presentationalHints?: boolean
 	/**
 	 * Optimize the size of generated documents. Supported types are images, fonts, all and none. This option can be used multiple times by passing an array, all adds all allowed values, none removes all previously set values.
 	 */
