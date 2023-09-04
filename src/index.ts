@@ -121,6 +121,15 @@ export type WeasyPrintBufferOptions = {
 function weasyprint(input: string, options: WeasyPrintBufferOptions): Promise<Buffer>
 
 /**
+ * Create a PDF from the passed input and write it to a file.
+ *
+ * @param input The html string, or URL of the page, to turn into a PDF.
+ * @param options The configuration for the command.
+ * @returns A promise that resolves when finished.
+ */
+function weasyprint(input: string, options: WeasyPrintFileOutputOptions): Promise<void>
+
+/**
  * Create a PDF from the passed input and get a stream with the result.
  *
  * @param input The html string, or URL of the page, to turn into a PDF.
@@ -129,17 +138,8 @@ function weasyprint(input: string, options: WeasyPrintBufferOptions): Promise<Bu
  */
 function weasyprint(
 	input: string,
-	options: WeasyPrintStreamOptions
+	options?: WeasyPrintStreamOptions
 ): internal.Readable & { err: internal.Readable }
-
-/**
- * Create a PDF from the passed input and write it to a file.
- *
- * @param input The html string, or URL of the page, to turn into a PDF.
- * @param options The configuration for the command.
- * @returns A promise that resolves when finished.
- */
-function weasyprint(input: string, options: WeasyPrintFileOutputOptions): Promise<void>
 
 function weasyprint(
 	input: string,
@@ -174,11 +174,7 @@ function weasyprint(
 
 	log("Spawning %s with args %o...", args[0], args)
 
-	if (process.platform === "win32") {
-		child = spawn(args[0], args.slice(1))
-	} else {
-		child = spawn("/bin/sh", ["-c", args.join(" ") + " | cat"])
-	}
+	child = spawn(args[0], args.slice(1))
 
 	if (!child.stdout || !child.stderr) {
 		throw new Error("Failed to spawn process")
@@ -208,14 +204,32 @@ function weasyprint(
 	})
 
 	return new Promise<Buffer | void>((resolve, reject) => {
-		child.on("exit", () => {
-			if (child.exitCode) {
-				reject(new Error(Buffer.concat(errBuffers).toString("utf8")))
-			} else {
-				if (!output) {
-					resolve(Buffer.concat(buffers))
+		let settled = false
+
+		child.on("error", (error) => {
+			if (!settled) {
+				settled = true
+
+				if ("code" in error && error.code === "ENOENT") {
+					reject(new Error(`Command \`${command}\` not found. Is it installed?`))
 				} else {
-					resolve()
+					reject(error)
+				}
+			}
+		})
+
+		child.on("exit", () => {
+			if (!settled) {
+				settled = true
+
+				if (child.exitCode) {
+					reject(new Error(Buffer.concat(errBuffers).toString("utf8")))
+				} else {
+					if (!output) {
+						resolve(Buffer.concat(buffers))
+					} else {
+						resolve()
+					}
 				}
 			}
 		})
