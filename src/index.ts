@@ -1,7 +1,6 @@
 import { paramCase } from "change-case"
-import { spawn } from "child_process"
+import { ChildProcess, spawn } from "child_process"
 import debug from "debug"
-import internal from "stream"
 
 const log = debug("weasyprint:log")
 const err = debug("weasyprint:error")
@@ -136,10 +135,7 @@ function weasyprint(input: string, options: WeasyPrintFileOutputOptions): Promis
  * @param options The configuration for the command.
  * @returns A stream with the result.
  */
-function weasyprint(
-	input: string,
-	options?: WeasyPrintStreamOptions
-): internal.Readable & { err: internal.Readable }
+function weasyprint(input: string, options?: WeasyPrintStreamOptions): ChildProcess
 
 function weasyprint(
 	input: string,
@@ -186,7 +182,8 @@ function weasyprint(
 	}
 
 	if (!output && !buffer) {
-		return Object.assign(child.stdout, { err: child.stderr })
+		// If the user doesn't want the output to a file or as a buffer, let's just return the child
+		return child
 	}
 
 	const buffers: Buffer[] = []
