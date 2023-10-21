@@ -5,9 +5,6 @@ import debug from "debug"
 const log = debug("weasyprint:log")
 const err = debug("weasyprint:error")
 
-const quote = (val: string) =>
-	process.platform !== "win32" ? `"${val.replace(/(["\\$`])/g, "\\$1")}"` : val
-
 type Size = "images" | "fonts" | "all" | "none"
 
 type WeasyPrintOptions = {
@@ -165,8 +162,8 @@ function weasyprint(
 		}
 	})
 
-	args.push(isUrl ? quote(input) : "-") // stdin if HTML given directly
-	args.push(output ? quote(output) : "-") // stdout if no output file
+	args.push(isUrl ? input : "-") // stdin if HTML given directly
+	args.push(output ? output : "-") // stdout if no output file
 
 	log("Spawning %s with args %o...", args[0], args)
 
