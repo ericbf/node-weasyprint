@@ -1,6 +1,6 @@
 {
 	"name": "node-weasyprint",
-	"version": "0.1.0",
+	"version": "0.1.1",
 	"description": "A NodeJS wrapper for [WeasyPrint](https://doc.courtbouillon.org/weasyprint/stable/index.html)",
 	"license": "MIT",
 	"repository": {
